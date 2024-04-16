@@ -148,3 +148,71 @@ while (my ($idx, $language) = each @fun_languages) {
 1 Perl
 2 Ruby
 ```
+
+### Defining and calling functions
+```python
+# Python
+def my_print(value, verbose=False):
+    if verbose:
+        print("my_print:")
+    print(value)
+
+my_print("Hello world!")
+my_print("Hello world! (verbose)", verbose=True)
+```
+
+```perl
+# Perl
+sub my_print($value, $verbose = 0) {
+    say "my_print:" if $verbose;
+    say $value;
+}
+
+my_print("Hello world!");
+my_print("Hello world! (verbose)", 1);
+```
+
+```bash
+# Output
+Hello world!
+my_print:
+Hello world! (verbose)
+```
+
+### Passing a reference to a function
+```python
+# Python
+def add_1_to_list(lst):
+    lst.append(1)
+
+def print_list(lst):
+    for item in lst:
+        print(item)
+
+lst = [1, 2, 3]
+add_1_to_list(lst)
+print_list(lst)
+```
+
+```perl
+# Perl
+sub add_1_to_array($array_ref) {
+    push @$array_ref, 1; # Dereference array before push
+}
+
+sub print_array($array_ref) {
+    say $_ for (@$array_ref);
+}
+
+my @array = (1, 2, 3);
+add_1_to_array(\@array); # Get reference to variable named "@array"
+print_array(\@array);
+```
+
+```bash
+# Output
+1
+2
+3
+1
+```
