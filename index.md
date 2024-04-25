@@ -17,14 +17,6 @@ why not start with the way most familiar to you? The second section goes over
 the most important features of Perl and compared them to what is found in other
 languages you might be familiar with.
 
-Note: All code in this document is assumed to be prefixed with `use v5.36;` to
-enable latest Perl features, like this:
-
-```perl
-use v5.36;
-
-# Example code
-```
 
 ## Language X to Perl
 
@@ -34,6 +26,93 @@ use v5.36;
 
 Here are some important features that set Perl apart from most programming
 languages.
+
+### Language version declaration
+
+Sometimes, adding a new feature into a language makes existing code behave
+in a different way. Consider, for example, this piece of code:
+
+```perl
+sub say {
+    print "Saying @_\n";
+}
+
+say "Hello";
+```
+
+In Perl 5.9, `say` is a regular identifier, and the program works as expected:
+
+```bash
+# Output
+Saying Hello
+```
+
+However, in Perl 5.10, a built-in function named `say` was added that takes over
+preference over a declared subroutine. In order not to break backwards
+compatiblity, Perl 5.10 and higher by default behaves just like no `say` keyword
+was added:
+
+```bash
+$ perl5.38.0 -e '
+sub say {
+    print "Saying @_\n";
+}
+
+say "Hello";
+'
+Saying Hello
+```
+
+To use the new `say` built-in, the programmer has to acknowledge they want to use Perl 5.10 features:
+
+```bash
+$ perl5.38.0 -e '
+use v5.10;
+
+sub say {
+    print "Saying @_\n";
+}
+
+say "Hello";
+'
+Hello
+```
+
+This has the additional benefit of throwing an explicit error in case your
+interepreter is too old:
+
+```bash
+$ perl5.38.0 -e '
+use v6;
+
+"New shiny stuff!".say;
+'
+Perl v6.0.0 required--this is only v5.38.0, stopped at -e line 2.
+BEGIN failed--compilation aborted at -e line 2.
+$ perl6 -e '
+use v6;
+
+"New shiny stuff!".say;
+'
+New shiny stuff!
+```
+
+Compare this to a mysterious error (or even worse, an unexpected behavior) in
+case of new syntax being used in an old interpreter:
+
+```bash
+$ perl5.38.0 -e '"New shiny stuff!".say;'
+# No output, `.` is interpreted as string concatenation in Perl 5
+```
+
+Note: All code in the remained of the document is assumed to be prefixed 
+with `use v5.36;`:
+
+```perl
+use v5.36;
+
+# Example code
+```
 
 ### Sigils
 
@@ -81,6 +160,11 @@ Cast to scalar can also be explicitely enforced:
 my @array = (1, 2, 3, 4);
 say "Array: ", @array;
 say "Array length: ", scalar @array;
+```
+```bash
+# Output
+Array: 1234
+Array length: 4
 ```
 
 ### Default variable
