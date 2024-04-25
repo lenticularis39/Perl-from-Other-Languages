@@ -17,6 +17,9 @@ why not start with the way most familiar to you? The second section goes over
 the most important features of Perl and compared them to what is found in other
 languages you might be familiar with.
 
+This document is inspired by a similar summary for Ruby:
+https://www.ruby-lang.org/en/documentation/ruby-from-other-languages/.
+
 
 ## Language X to Perl
 
